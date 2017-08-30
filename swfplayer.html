@@ -3,6 +3,7 @@
 <script src="jquery.swfobject.1-1-1.min.js"></script>
 
 <script>
+my_flash = 'file:///E:/Downloads/English/GRE%20%E8%A7%86%E9%A2%91%E8%AF%BE%E7%A8%8B/2%E3%80%81%E5%A4%AF%E5%AE%9E%E5%9F%BA%E7%A1%80%20%E8%AF%BE%E6%97%B6%EF%BC%9A%2060%E8%AF%BE%E6%97%B6/6%E3%80%81%E5%86%99%E4%BD%9C%E5%9F%BA%E7%A1%80%20%E8%AE%B2%E5%B8%88%EF%BC%9A%E5%BC%A0%E9%9B%B7%E5%86%AC%20%E8%AF%BE%E6%97%B6%EF%BC%9A15/5_4%20%E5%9B%A0%E6%9E%9C%E5%85%B3%E7%B3%BB.swf';
 flashMovie = null;
 
 $(document).ready(
@@ -11,7 +12,7 @@ $(document).ready(
 
     flashMovie.flash(
       {
-        swf: 'file:///E:/Downloads/English/GRE%20%E8%A7%86%E9%A2%91%E8%AF%BE%E7%A8%8B/2%E3%80%81%E5%A4%AF%E5%AE%9E%E5%9F%BA%E7%A1%80%20%E8%AF%BE%E6%97%B6%EF%BC%9A%2060%E8%AF%BE%E6%97%B6/6%E3%80%81%E5%86%99%E4%BD%9C%E5%9F%BA%E7%A1%80%20%E8%AE%B2%E5%B8%88%EF%BC%9A%E5%BC%A0%E9%9B%B7%E5%86%AC%20%E8%AF%BE%E6%97%B6%EF%BC%9A15/5_4%20%E5%9B%A0%E6%9E%9C%E5%85%B3%E7%B3%BB.swf',
+        swf: my_flash,
         width: 1280, //481,
         height: 720, // 86,
         play: false,
@@ -22,6 +23,22 @@ $(document).ready(
     );
   }
 );
+
+// 空格切换 暂停/播放
+isPaused = true;
+// https://stackoverflow.com/questions/6199038/javascript-event-triggered-by-pressing-space
+$(window).keypress(function (e) {
+  if (e.keyCode === 0 || e.keyCode === 32) {
+    e.preventDefault()
+    if (isPaused) {
+      play(); isPaused = false;
+    } else {
+      pause(); isPaused = true;
+    }
+    // console.log('Space pressed')
+  }
+})
+
 
 function play() {
   flashMovie.flash(
