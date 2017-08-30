@@ -1,26 +1,38 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>SwfPlayer</title>
 
 <script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
 <script src="jquery.swfobject.1-1-1.min.js"></script>
 
 <script>
+// https://stackoverflow.com/questions/957537/how-can-i-display-a-javascript-object
+
 my_flash = 'file:///E:/Downloads/English/GRE%20%E8%A7%86%E9%A2%91%E8%AF%BE%E7%A8%8B/2%E3%80%81%E5%A4%AF%E5%AE%9E%E5%9F%BA%E7%A1%80%20%E8%AF%BE%E6%97%B6%EF%BC%9A%2060%E8%AF%BE%E6%97%B6/6%E3%80%81%E5%86%99%E4%BD%9C%E5%9F%BA%E7%A1%80%20%E8%AE%B2%E5%B8%88%EF%BC%9A%E5%BC%A0%E9%9B%B7%E5%86%AC%20%E8%AF%BE%E6%97%B6%EF%BC%9A15/5_4%20%E5%9B%A0%E6%9E%9C%E5%85%B3%E7%B3%BB.swf';
 flashMovie = null;
+
+myFlashObj = $.flash.create(
+  {
+    swf: my_flash,
+    width: 0.8*$(window).width(), //481,
+    height: 0.8*$(window).height(), // 86,
+    scale: "noScale",
+    allowfullscreen: true,
+    play: false,
+  }
+);
 
 $(document).ready(
   function () {
     flashMovie = $('#flashInteract .movie');
+    flashMovie.html(myFlashObj);
 
-    flashMovie.flash(
-      {
-        swf: my_flash,
-        width: 1280, //481,
-        height: 720, // 86,
-        play: false,
-        flashvars: {
-          message: 'I come from Flash.'
-        },
-      }
-    );
+    // flashMovie.css('height', '100%');
+    // totalFrames = myFlashObj.TotalFrames; //attr('TotalFrames');
+    // alert(print(myFlashObj))
+    // $('body').append( print(myFlashObj) ); // my_print
+    // $('textarea#ExampleMessage').text( my_print($('object')) );
   }
 );
 
@@ -39,6 +51,30 @@ $(window).keypress(function (e) {
   }
 })
 
+// 尺寸跟随窗口调整
+$( window ).resize(function() {
+  flashMovie.flash(
+      {
+        swf: my_flash,
+        width: 0.8*$(window).width(), //481,
+        height: 0.8*$(window).height(), // 86,
+      }
+    );
+});
+
+function print(o){
+    var str='';
+
+    for(var p in o){
+        if(typeof o[p] == 'string'){
+            str+= p + ': ' + o[p]+'; </br>';
+        }else{
+            str+= p + ': { </br>' + print(o[p]) + '}';
+        }
+    }
+
+    return str;
+}
 
 function play() {
   flashMovie.flash(
@@ -119,8 +155,27 @@ function getFromFlash() {
 }
 </script>
 
-<div id="flashInteract">
-  <div class="movie"></div>
+<style>
+html {
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
+}
+</style>
+
+<style type="text/css">
+:root #content > #right > .dose > .dosesingle,
+:root #content > #center > .dose > .dosesingle,
+:root #header + #content > #left > #rlblock_left
+{ display: none !important; }</style></head>
+
+<div id="flashInteract" align="center">
+  <div class="movie" id="flash"></div>
 
   <p style="font-family: arial;">
     <input type="button" onclick="firstFrame();" value="&lt;&lt;" />
@@ -131,9 +186,11 @@ function getFromFlash() {
     <input type="button" onclick="lastFrame();" value="&gt;&gt;" />
   </p>
 
-  <p>
+<!--   <p>
     <input type="text" value="I come from javascript." size="20" onfocus="this.select();" id="data" /> 
     <input type="button" onclick="sendToFlash();" value="Send to Flash" />
     <input type="button" onclick="getFromFlash();" value="Get from Flash" />
-  </p>
+  </p> -->
 </div>
+
+<!-- <textarea id = "ExampleMessage"></textarea> -->
