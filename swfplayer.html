@@ -1,0 +1,122 @@
+
+<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script src="jquery.swfobject.1-1-1.min.js"></script>
+
+<script>
+flashMovie = null;
+
+$(document).ready(
+  function () {
+    flashMovie = $('#flashInteract .movie');
+
+    flashMovie.flash(
+      {
+        swf: 'file:///E:/Downloads/English/GRE%20%E8%A7%86%E9%A2%91%E8%AF%BE%E7%A8%8B/2%E3%80%81%E5%A4%AF%E5%AE%9E%E5%9F%BA%E7%A1%80%20%E8%AF%BE%E6%97%B6%EF%BC%9A%2060%E8%AF%BE%E6%97%B6/6%E3%80%81%E5%86%99%E4%BD%9C%E5%9F%BA%E7%A1%80%20%E8%AE%B2%E5%B8%88%EF%BC%9A%E5%BC%A0%E9%9B%B7%E5%86%AC%20%E8%AF%BE%E6%97%B6%EF%BC%9A15/5_4%20%E5%9B%A0%E6%9E%9C%E5%85%B3%E7%B3%BB.swf',
+        width: 1280, //481,
+        height: 720, // 86,
+        play: false,
+        flashvars: {
+          message: 'I come from Flash.'
+        },
+      }
+    );
+  }
+);
+
+function play() {
+  flashMovie.flash(
+    function() {
+      this.Play();
+    }
+  );
+}
+
+function pause() {
+  flashMovie.flash(
+    function() {
+      this.StopPlay();
+    }
+  );
+}
+
+function firstFrame() {
+  flashMovie.flash(
+    function() {
+      this.GotoFrame(0);
+    }
+  );
+}
+
+function lastFrame() {
+  flashMovie.flash(
+    function() {
+      this.GotoFrame(9);
+    }
+  );
+}
+
+function prevFrame() {
+  flashMovie.flash(
+    function() {
+      var currentFrame = this.TGetProperty('/', 4),
+        previousFrame = parseInt(currentFrame) - 2;
+
+      if (previousFrame < 0) {
+        previousFrame = 9;
+      }
+
+      this.GotoFrame(previousFrame);
+    }
+  );
+}
+
+function nextFrame() {
+  flashMovie.flash(
+    function() {
+      var currentFrame = this.TGetProperty('/', 4),
+        nextFrame = parseInt(currentFrame);
+
+      if (nextFrame >= 10) {
+        nextFrame = 0;
+      }
+
+      this.GotoFrame(nextFrame);
+    }
+  );
+}
+
+function sendToFlash() {
+  flashMovie.flash(
+    function() {
+      this.SetVariable('/:message', document.getElementById('data').value);
+    }
+  );
+}
+
+function getFromFlash() {
+  flashMovie.flash(
+    function() {
+      document.getElementById('data').value = this.GetVariable('/:message');
+    }
+  );
+}
+</script>
+
+<div id="flashInteract">
+  <div class="movie"></div>
+
+  <p style="font-family: arial;">
+    <input type="button" onclick="firstFrame();" value="&lt;&lt;" />
+    <input type="button" onclick="prevFrame();" value="&lt;" />
+    <input type="button" onclick="play();" value="PLAY" />
+    <input type="button" onclick="pause();" value="PAUSE" />
+    <input type="button" onclick="nextFrame();" value="&gt;" />
+    <input type="button" onclick="lastFrame();" value="&gt;&gt;" />
+  </p>
+
+  <p>
+    <input type="text" value="I come from javascript." size="20" onfocus="this.select();" id="data" /> 
+    <input type="button" onclick="sendToFlash();" value="Send to Flash" />
+    <input type="button" onclick="getFromFlash();" value="Get from Flash" />
+  </p>
+</div>
